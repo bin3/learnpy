@@ -30,7 +30,7 @@ class Worker(threading.Thread):
   def run(self):
     for i in range(self.requests):
       self.sema.acquire()
-      print('%s is processing request#%d' % (self.getName(), i))
+      print('%s is processing request#%d' % (self.name, i))
       time.sleep(1)
       self.sema.release()
 #      time.sleep(0.01)
@@ -39,9 +39,11 @@ def demo():
   sema = threading.Semaphore(2)
   workers = []
   for _ in range(4):
-    worker = Worker(sema, 3)
-    worker.start()
+    worker = Worker(sema, 5)
     workers.append(worker)
+  
+  for worker in workers:
+    worker.start()
   
   for worker in workers:
     worker.join()
